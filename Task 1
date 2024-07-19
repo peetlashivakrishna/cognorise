@@ -1,0 +1,151 @@
+import java.util.ArrayList;
+
+
+class Book {
+    private String title;
+    private String author;
+    private boolean checkedOut;
+
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.checkedOut = false; 
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public boolean isCheckedOut() {
+        return checkedOut;
+    }
+
+    public void setCheckedOut(boolean checkedOut) {
+        this.checkedOut = checkedOut;
+    }
+
+    
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", checkedOut=" + checkedOut +
+                '}';
+    }
+}
+
+
+class LibraryCatalog {
+    private ArrayList<Book> books;
+
+    public LibraryCatalog() {
+        this.books = new ArrayList<>();
+    }
+
+    
+    public void addBook(String title, String author) {
+        Book newBook = new Book(title, author);
+        books.add(newBook);
+    }
+
+    
+    public ArrayList<Book> searchByTitle(String title) {
+        ArrayList<Book> result = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
+
+    
+    public ArrayList<Book> searchByAuthor(String author) {
+        ArrayList<Book> result = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getAuthor().equalsIgnoreCase(author)) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
+
+    
+    public boolean checkOutBook(String title) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title) && !book.isCheckedOut()) {
+                book.setCheckedOut(true);
+                return true; 
+            }
+        }
+        return false; 
+    }
+
+   
+    public boolean returnBook(String title) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title) && book.isCheckedOut()) {
+                book.setCheckedOut(false);
+                return true; 
+            }
+        }
+        return false; 
+    }
+
+    
+    public void displayBooks() {
+        System.out.println("Library Catalog:");
+        for (Book book : books) {
+            System.out.println(book);
+        }
+        System.out.println("End of Catalog");
+    }
+}
+
+
+public class LibraryManagementSystem {
+    public static void main(String[] args) {
+        LibraryCatalog library = new LibraryCatalog();
+
+        
+        library.addBook("The Catcher in the Rye", "J.D. Salinger");
+        library.addBook("To Kill a Mockingbird", "Harper Lee");
+        library.addBook("1984", "George Orwell");
+
+        
+        library.displayBooks();
+
+        
+        ArrayList<Book> searchResult = library.searchByTitle("1984");
+        System.out.println("Search results for title '1984':");
+        for (Book book : searchResult) {
+            System.out.println(book);
+        }
+
+        
+        boolean checkedOut = library.checkOutBook("To Kill a Mockingbird");
+        if (checkedOut) {
+            System.out.println("Successfully checked out 'To Kill a Mockingbird'");
+        } else {
+            System.out.println("Could not check out 'To Kill a Mockingbird'");
+        }
+
+        
+        library.displayBooks();
+
+        
+        boolean returned = library.returnBook("To Kill a Mockingbird");
+        if (returned) {
+            System.out.println("Successfully returned 'To Kill a Mockingbird'");
+        } else {
+            System.out.println("Could not return 'To Kill a Mockingbird'");
+        }
+
+        
+        library.displayBooks();
+    }
+}
